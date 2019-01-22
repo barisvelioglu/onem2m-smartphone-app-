@@ -3,10 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var request = require('request');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+const axios = require('axios')
 
 var app = express();
 
@@ -39,34 +40,26 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-function createUI(callback){
-  var data = {
-      "m2m:ae" : {
-          "rn": "in-ae",
-          "api": "0.2.481.2.0001.001.000161",
-          "rr": true,
-          "poa": ["http://192.168.1.152:32797"]
-        }
-  };
+var data = {
+  "m2m:ae" : {
+      "rn": "in-ae",
+      "api": "0.2.481.2.0001.001.000161",
+      "rr": true,
+      "poa": ["http://195.87.214.52:32797"]
+    }
+};
 
-  var parsedData = JSON.parse(data);
-
-  request.post({
-      url : mnCseUrl,
-      headers : {
-          'User-Agent' : 'in-ae',
-          'X-M2M-RI' : "RI61",
-          'X-M2M-Origin' : "CUi",
-          'Content-Type' : 'application/json;ty=2'
-      },
-      formData : parsedData
-  }, function(err, response, body){
-      if (err) {
-          return console.error('upload failed:', err);
-        }
-        console.log('Successful!!', body);
-  });
-}
-
+axios.post('http://localhost:56163/api/values', data, {
+  headers: {
+    'Content-Type': 'application/json;ty=2',
+  }
+})
+.then((res) => {
+  console.log(`statusCode: ${res.statusCode}`)
+  console.log(res)
+})
+.catch((error) => {
+  console.error(error)
+})
 
 module.exports = app;
