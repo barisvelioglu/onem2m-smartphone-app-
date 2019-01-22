@@ -1,0 +1,48 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.wrapper {
+  border: 3px solid #000;
+  border-radius : 25px;
+  padding: 10px;
+  width: 280px;
+  min-height:400px;
+  position: relative;
+}
+
+.features 
+{
+  margin-top:50px;
+}
+
+.features li {
+  margin:10px 0;
+}
+
+.features span{
+  font-weight : bold;
+  padding : 10px;
+  font-size : 18px;
+}
+
+.iphonebutton{
+  height:50px;
+  width:50px;
+  border:2px solid gray;
+  border-radius:20px;
+  display:block;
+  position:absolute;
+  bottom:10px;
+  left: 120px;
+
+}
