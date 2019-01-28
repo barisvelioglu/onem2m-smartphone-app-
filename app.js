@@ -49,7 +49,7 @@ var data = {
     }
 };
 
-axios.post('http://localhost:56163/api/values', data, {
+axios.post('http://localhost:59954/api/v1/onem2m/~/in-cse', data, {
   headers: {
     'Content-Type': 'application/json;ty=2',
   }
@@ -60,6 +60,63 @@ axios.post('http://localhost:56163/api/values', data, {
 })
 .catch((error) => {
   console.error(error)
-})
+});
+
+//DISCOVERY
+
+discovery()
+
+function discovery(callback){
+  let data = {
+
+  };
+
+  axios.get('http://localhost:59954/api/v1/onem2m/~/in-cse=fu=1&ty=3', {
+    headers: {
+      'User-Agent' : 'ipe',
+      'X-M2M-RI' : "RI" + reqCounter++,
+      'X-M2M-Origin' : "in-ae",
+      'Content-Type' : 'application/json;'
+    }
+  })
+  .then((res) => {
+    console.log(`statusCode: ${res.statusCode}`)
+    console.log(res)
+  })
+  .catch((error) => {
+    console.error(error)
+  });
+}
+
+var reqCounter = 1000;
+var containers = [];
+
+setInterval(function(){
+
+  for(var i=0; i<containers.length; i++){
+    let cntId = containers[i];
+    getLatestContentInstance(cntId);
+  }
+
+}, 5000);
+
+function getLatestContentInstance(containerid){
+
+  axios.get('http://localhost:59954/api/v1/onem2m/~' + containerid + "/la", {
+    headers: {
+      'User-Agent' : 'ipe',
+      'X-M2M-RI' : "RI" + reqCounter++,
+      'X-M2M-Origin' : "in-ae",
+      'Content-Type' : 'application/json;'
+    }
+  })
+  .then((res) => {
+    console.log(`statusCode: ${res.statusCode}`)
+    console.log(res)
+  })
+  .catch((error) => {
+    console.error(error)
+  });
+}
 
 module.exports = app;
