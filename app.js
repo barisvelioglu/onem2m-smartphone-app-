@@ -7,9 +7,13 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-const axios = require('axios')
+
+const axios     = require('axios')
+const JSONdb    = require('simple-json-db');
+const db        = new JSONdb(__dirname + '/database61.json');
 
 var app = express();
+var subscriptionForActualState  = db.get('subscriptionForActualState');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -49,7 +53,7 @@ var data = {
     }
 };
 
-axios.post('http://localhost:59954/api/v1/onem2m/~/in-cse', data, {
+axios.post('http://localhost:32772/api/v1/onem2m/~/mn-cse', data, {
   headers: {
     'Content-Type': 'application/json;ty=2',
   }
@@ -62,16 +66,16 @@ axios.post('http://localhost:59954/api/v1/onem2m/~/in-cse', data, {
   console.error(error)
 });
 
-//DISCOVERY
 
-discovery()
+//DISCOVERY
+discovery(function(){
+
+
+});
 
 function discovery(callback){
-  let data = {
 
-  };
-
-  axios.get('http://localhost:59954/api/v1/onem2m/~/in-cse=fu=1&ty=3', {
+  axios.get('http://localhost:32772/api/v1/onem2m/~/mn-cse=fu=1&ty=3', {
     headers: {
       'User-Agent' : 'ipe',
       'X-M2M-RI' : "RI" + reqCounter++,
@@ -86,6 +90,7 @@ function discovery(callback){
   .catch((error) => {
     console.error(error)
   });
+
 }
 
 var reqCounter = 1000;
@@ -102,7 +107,7 @@ setInterval(function(){
 
 function getLatestContentInstance(containerid){
 
-  axios.get('http://localhost:59954/api/v1/onem2m/~' + containerid + "/la", {
+  axios.get('http://localhost:32772/api/v1/onem2m/~' + containerid + "/la", {
     headers: {
       'User-Agent' : 'ipe',
       'X-M2M-RI' : "RI" + reqCounter++,
